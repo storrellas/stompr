@@ -27,18 +27,4 @@ var error_callback = function(error) {
   console.log("error callback")
 };
 
-
 client.connect('system', 'manager', connect_callback, error_callback);
-
-/*
-function message_callback(body, headers) {
-    console.log('Message Callback Fired!');
-    console.log('Headers: ' + sys.inspect(headers));
-    console.log('Body: ' + body);
-}
-
-client.on('connected', function() {
-    client.subscribe(headers, message_callback);
-    console.log('Connected');
-});
-/**/

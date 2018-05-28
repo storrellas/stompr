@@ -3,3 +3,12 @@
 
 2. Launch broker
 mybroker/bin/mybroker console
+
+3. See example on WebSocket python
+https://pypi.org/project/websocket-client/
+
+4. Stomp
+stomp -H localhost -P 6161Â3
+
+subscribe /queue/test
+send /queue/test hello world
