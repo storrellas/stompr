@@ -1,0 +1,5 @@
+1. Create ActiveMQ broker
+/home/vagrant/Downloads/apache-activemq-5.15.4/bin/activemq create mybroker
+
+2. Launch broker
+mybroker/bin/mybroker console
