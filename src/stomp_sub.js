@@ -1,6 +1,6 @@
 var Stomp = require('stompjs');
 var client = Stomp.overWS('ws://localhost:61614/stomp');
-var R = require("r-script");
+var R = require("./r-script/index.js");
 
 
 var connect_callback = function() {
