@@ -4,17 +4,19 @@ py_available()
 
 stompr <- import_from_path('stompr', path='/vagrant/workspace/stompr/src/stuff/')
 
-on_connected <- function(headers, body){
+on_connected <- py_func(function(headers, body){
     print('handler - connected to broker')
-}
+})
 
-on_error <- function(headers){
+on_error <- py_func(function(headers){
     print('handler - received an error')
-}
+    return(headers)
+})
 
-on_message <- function(headers){
+on_message <- py_func(function(headers){
     print('handler - received message')
-}
+    return(headers)
+})
 
 
 stompr$connection('localhost', '61613')
