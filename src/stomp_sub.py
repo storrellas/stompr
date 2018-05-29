@@ -2,12 +2,17 @@ import time
 import sys
 
 import stomp
+import rpy2.robjects as robjects
 
 class MyListener(stomp.ConnectionListener):
+    def on_connected(self, headers, body):
+        print('connected to broker "%s"' % headers)
     def on_error(self, headers, message):
         print('received an error "%s"' % message)
     def on_message(self, headers, message):
         print('received a message "%s"' % message)
+        robjects.r.source('src/script.R');
+
 
 conn = stomp.Connection([('localhost','61613')])
 conn.set_listener('', MyListener())

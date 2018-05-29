@@ -1,5 +1,5 @@
 wd <- getwd()
-print(paste0("Current working dir: ", wd))
+print(paste0("Current working dir --- SERGI: ", wd))
 
 
 ##################################################################################
