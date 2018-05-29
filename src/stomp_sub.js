@@ -1,5 +1,6 @@
 var Stomp = require('stompjs');
 var client = Stomp.overWS('ws://localhost:61614/stomp');
+var R = require("r-script");
 
 
 var connect_callback = function() {
@@ -10,6 +11,11 @@ var connect_callback = function() {
   var subscription = client.subscribe('/queue/test', function(message){
     console.log("++ Received message ++")
     console.log(message)
+
+    var out = R("src/script.R")
+//      .data("hello world", 20)
+      .callSync();
+    console.log(out);
   });
 
 };
@@ -20,3 +26,4 @@ var error_callback = function(error) {
 };
 
 client.connect('system', 'manager', connect_callback, error_callback);
+/**/
