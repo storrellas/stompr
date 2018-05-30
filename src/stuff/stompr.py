@@ -5,12 +5,6 @@ import stomp
 
 # Global variables
 conn = 0
-handler_on_connected = 0
-handler_on_error = 0
-handler_on_message = 0
-data = 0
-
-
 
 class StompRListener(stomp.ConnectionListener):
 
@@ -23,27 +17,14 @@ class StompRListener(stomp.ConnectionListener):
 
     def on_connected(self, headers, body):
         print('connected to broker "%s"' % headers)
-        global handler_on_connected
-        print handler_on_connected
-        # handler_on_connected(headers, body)
-        global data
-        print body
-        print headers
-        data = headers
         self.data = headers
-
 
     def on_error(self, headers, message):
         print('received an error "%s"' % message)
-        global handler_on_error
-        # handler_on_error(headers, message)
+        self.data = message
 
     def on_message(self, headers, message):
         print('received a message "%s"' % message)
-        global handler_on_message
-        global data
-        # handler_on_message(headers, message)
-        data = message
         self.data = message
 
 # Generate listener object
@@ -53,19 +34,6 @@ def connection(host, port):
     print('Connecting ...')
     global conn
     conn = stomp.Connection([('localhost','61613')])
-
-def set_listener_on_connected(handler):
-    print('Setting on connected handler ...')
-    global handler_on_connected
-    handler_on_connected = handler
-
-def set_listener_on_error(handler):
-    global handler_on_error
-    handler_on_error = handler
-
-def set_listener_on_message(handler):
-    global handler_on_message
-    handler_on_message = handler
 
 def set_listener():
     print('Set Listener ...')

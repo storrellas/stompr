@@ -20,9 +20,6 @@ on_message <- py_func(function(headers){
 
 
 stompr$connection('localhost', '61613')
-stompr$set_listener_on_connected(on_connected)
-stompr$set_listener_on_error(on_error)
-stompr$set_listener_on_message(on_message)
 stompr$set_listener()
 stompr$start()
 stompr$connect('system', 'manager')
