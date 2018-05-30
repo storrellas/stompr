@@ -3,14 +3,20 @@ import sys
 
 import stomp
 
-# Global variables
-conn = 0
+import threading
 
+cv = threading.Condition()
+cv.acquire()
+cv.notifyAll()
+cv.release()
+
+# Generic listener for StompR
 class StompRListener(stomp.ConnectionListener):
 
     data = 0
 
     def get_data(self):
+        global cv
         data_local = self.data
         self.data = ''
         return str(data_local)
@@ -19,15 +25,34 @@ class StompRListener(stomp.ConnectionListener):
         print('connected to broker "%s"' % headers)
         self.data = headers
 
+        # Synchronised block
+        global cv
+        cv.acquire()
+        cv.notifyAll()
+        cv.release()
+
     def on_error(self, headers, message):
         print('received an error "%s"' % message)
         self.data = message
+
+        # Synchronised block
+        global cv
+        cv.acquire()
+        cv.notifyAll()
+        cv.release()
 
     def on_message(self, headers, message):
         print('received a message "%s"' % message)
         self.data = message
 
-# Generate listener object
+        # Synchronised block
+        global cv
+        cv.acquire()
+        cv.notifyAll()
+        cv.release()
+
+# Generate global variables
+conn = 0
 listener = StompRListener()
 
 def connection(host, port):
@@ -36,11 +61,8 @@ def connection(host, port):
     conn = stomp.Connection([('localhost','61613')])
 
 def set_listener():
-    print('Set Listener ...')
     global conn
-    #conn.set_listener('', StompRListener())
     conn.set_listener('', listener)
-
 
 def start():
     global conn
@@ -48,15 +70,21 @@ def start():
 
 def connect(user, password):
     global conn
-    conn.connect('system', 'manager', wait=True)
 
-def get_data():
+    # Synchronised block
+    cv.acquire()
+    conn.connect('system', 'manager', wait=True)
+    cv.wait()
+    cv.release()
+
+def read_polling():
     return listener.get_data()
-    # global data
-    #
-    # data_local = data
-    # data = ''
-    # return str(data_local)
+
+def read_blocking():
+    cv.acquire()
+    cv.wait()
+    cv.release()
+    return listener.get_data()
 
 def subscribe():
     global conn
