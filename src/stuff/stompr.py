@@ -8,8 +8,7 @@ conn = 0
 handler_on_connected = 0
 handler_on_error = 0
 handler_on_message = 0
-
-import inspect
+data = 0
 
 class MyListener(stomp.ConnectionListener):
     def on_connected(self, headers, body):
@@ -17,7 +16,11 @@ class MyListener(stomp.ConnectionListener):
         global handler_on_connected
         print handler_on_connected
         # handler_on_connected(headers, body)
-        print inspect.getargspec(handler_on_connected)
+        global data
+        print body
+        print headers
+        data = headers
+
 
     def on_error(self, headers, message):
         print('received an error "%s"' % message)
@@ -28,8 +31,9 @@ class MyListener(stomp.ConnectionListener):
     def on_message(self, headers, message):
         print('received a message "%s"' % message)
         global handler_on_message
+        global data
         # handler_on_message(headers, message)
-        print inspect.getargspec(handler_on_message)
+        data = message
 
 def connection(host, port):
     print('Connecting ...')
@@ -61,6 +65,13 @@ def start():
 def connect(user, password):
     global conn
     conn.connect('system', 'manager', wait=True)
+
+def get_data():
+    global data
+
+    data_local = data
+    data = ''
+    return str(data_local)
 
 def subscribe():
     global conn

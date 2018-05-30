@@ -37,4 +37,16 @@ stompr$subscribe()
 # conn$disconnect()
 #
 print("looping forever")
-repeat{}
+repeat{
+  data <- stompr$get_data()
+  if (data == ''){
+    # Do nothing
+  }else{
+    message(sprintf("Current working dir: %s\n", data))    
+  }
+
+
+
+  #print(paste0("Current working dir: ", data))
+  Sys.sleep(1)
+}
