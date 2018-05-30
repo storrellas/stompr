@@ -42,11 +42,11 @@ repeat{
   if (data == ''){
     # Do nothing
   }else{
-    message(sprintf("Current working dir: %s\n", data))    
+    message(sprintf("Current working dir: %s\n", data))
   }
 
 
 
   #print(paste0("Current working dir: ", data))
-  Sys.sleep(1)
+  Sys.sleep(0.5)
 }
